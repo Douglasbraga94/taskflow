@@ -3,8 +3,12 @@ package com.taskflow.userservice.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandle {
@@ -27,5 +31,20 @@ public class GlobalExceptionHandle {
         problem.setProperty("errorCode", "USER_NOT_FOUND");
         return problem;
 
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ProblemDetail handleValidation(MethodArgumentNotValidException exception){
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problem.setTitle("Dados Inválidos");
+        problem.setProperty("errorCode", "VALIDATION_ERROR");
+
+        Map<String, String> errors = new HashMap<>();
+        exception.getBindingResult().getFieldErrors().forEach((fieldError) -> {
+            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+        });
+        problem.setProperty("campos", errors);
+
+        return problem;
     }
 }

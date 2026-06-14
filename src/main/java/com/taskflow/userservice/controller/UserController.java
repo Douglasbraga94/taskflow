@@ -4,7 +4,9 @@ import com.taskflow.userservice.domain.User;
 import com.taskflow.userservice.dto.CreateUserRequest;
 import com.taskflow.userservice.dto.UserResponse;
 import com.taskflow.userservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
@@ -35,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody CreateUserRequest request){
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody CreateUserRequest request){
         UserResponse response = userService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
