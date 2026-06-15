@@ -47,4 +47,14 @@ public class GlobalExceptionHandle {
 
         return problem;
     }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ProblemDetail handleInvalidCredentials(InvalidCredentialsException exception){
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.UNAUTHORIZED, exception.getMessage()
+        );
+        problem.setTitle("Falha na autenticação");
+        problem.setProperty("errorCode", "INVALID_CREDENTIALS");
+        return problem;
+    }
 }
