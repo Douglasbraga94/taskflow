@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
 
 spring:
   application:
@@ -8,9 +8,9 @@ spring:
     virtual:
       enabled: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/taskflow_users
-    username: taskflow
-    password: secret
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/taskflow_users}
+    username: ${DB_USERNAME:taskflow}
+    password: ${DB_PASSWORD:secret}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -19,4 +19,4 @@ spring:
     enabled: true
 
 jwt:
-  secret: "0OL3hz0pZb6pqe6yKvcHFwCqKwIaQZmT9RlSMfgcmRx"
+  secret: ${JWT_SECRET:0OL3hz0pZb6pqe6yKvcHFwCqKwIaQZmT9RlSMfgcmRx}
