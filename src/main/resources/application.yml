@@ -17,3 +17,6 @@ spring:
     show-sql: true
   flyway:
     enabled: true
+
+jwt:
+  secret: "0OL3hz0pZb6pqe6yKvcHFwCqKwIaQZmT9RlSMfgcmRx"
