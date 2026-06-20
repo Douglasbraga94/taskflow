@@ -1,6 +1,7 @@
 package com.taskflow.userservice.service;
 
 import com.taskflow.userservice.domain.User;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,5 +36,26 @@ public class TokenService {
                 .expiration(expirationDate)
                 .signWith(key)
                 .compact();
+    }
+
+    public String extractEmail(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    public boolean isValid(String token) {
+        try{
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 }

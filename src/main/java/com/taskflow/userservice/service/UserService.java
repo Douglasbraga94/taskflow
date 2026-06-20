@@ -1,10 +1,7 @@
 package com.taskflow.userservice.service;
 
 import com.taskflow.userservice.domain.User;
-import com.taskflow.userservice.dto.CreateUserRequest;
-import com.taskflow.userservice.dto.LoginReponse;
-import com.taskflow.userservice.dto.LoginRequest;
-import com.taskflow.userservice.dto.UserResponse;
+import com.taskflow.userservice.dto.*;
 import com.taskflow.userservice.exception.EmailAlreadyUsedException;
 import com.taskflow.userservice.exception.InvalidCredentialsException;
 import com.taskflow.userservice.exception.UserNotFoundException;
@@ -62,5 +59,13 @@ public class UserService {
 
         String token = tokenService.generateToken(user);
         return new LoginReponse(token, "Bearer");
+    }
+
+    public UserCredentialsResponse findCredentialsByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(0L));
+        return new UserCredentialsResponse(
+                user.getId(), user.getName(), user.getEmail(),  user.getPasswordHash()
+        );
     }
 }
